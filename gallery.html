@@ -3,24 +3,34 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Факультет — 20 років</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<title>Фотогалерея · ФТІТ 20 років</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;700;900&family=Geologica:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg: #0e0e0f;
-    --surface: #161618;
-    --surface2: #1d1d20;
-    --border: rgba(255,255,255,0.07);
-    --border2: rgba(255,255,255,0.12);
-    --text: #f0ede8;
-    --text2: #9b9893;
-    --text3: #5a5855;
-    --accent: #c9a96e;
-    --accent2: #e8d5b0;
-    --font-display: 'Playfair Display', Georgia, serif;
-    --font-body: 'DM Sans', system-ui, sans-serif;
+    --deep:     #060e1f;
+    --navy:     #0d1b3e;
+    --navy-mid: #162650;
+    --blue:     #1e40af;
+    --electric: #29aaff;
+    --sky:      #7dd4fc;
+    --yellow:   #f5c518;
+    --white:    #ffffff;
+    --muted:    #94a3b8;
+    --border:   rgba(41,170,255,0.15);
+    --border2:  rgba(41,170,255,0.28);
+    --bg:       #060e1f;
+    --surface:  #0d1b3e;
+    --surface2: #162650;
+    --text:     #ffffff;
+    --text2:    #94a3b8;
+    --text3:    rgba(148,163,184,0.45);
+    --accent:   #29aaff;
+    --accent2:  #7dd4fc;
+    --font-display: 'Unbounded', sans-serif;
+    --font-body:    'Geologica', sans-serif;
   }
 
   html { scroll-behavior: smooth; }
@@ -47,25 +57,34 @@
   }
   .hero-left {}
   .hero-eyebrow {
-    font-family: var(--font-body);
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.2em;
+    font-family: var(--font-display);
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.28em;
     text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 16px;
+    color: var(--electric);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .hero-eyebrow::before {
+    content: "";
+    width: 24px; height: 1px;
+    background: var(--electric);
+    display: block;
   }
   .hero-title {
     font-family: var(--font-display);
-    font-size: clamp(42px, 6vw, 80px);
-    font-weight: 400;
-    line-height: 1.05;
-    color: var(--text);
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--white);
     letter-spacing: -0.02em;
   }
   .hero-title em {
-    font-style: italic;
-    color: var(--accent);
+    font-style: normal;
+    color: var(--electric);
   }
   .hero-subtitle {
     margin-top: 20px;
@@ -80,9 +99,12 @@
   }
   .hero-stat {
     font-family: var(--font-display);
-    font-size: 64px;
-    font-weight: 700;
-    color: var(--accent);
+    font-size: 4rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--sky), var(--electric));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     line-height: 1;
   }
   .hero-stat-label {
@@ -98,8 +120,8 @@
     position: sticky;
     top: 0;
     z-index: 50;
-    background: rgba(14,14,15,0.95);
-    backdrop-filter: blur(12px);
+    background: rgba(6,14,31,0.92);
+    backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--border);
   }
   .year-nav {
@@ -128,9 +150,10 @@
   }
   .year-btn:hover { color: var(--text2); }
   .year-btn.active {
-    color: var(--accent);
-    border-bottom-color: var(--accent);
+    color: var(--electric);
+    border-bottom-color: var(--electric);
     font-weight: 500;
+    font-family: var(--font-display);
   }
 
   /* TIMELINE */
@@ -154,9 +177,12 @@
   }
   .year-number {
     font-family: var(--font-display);
-    font-size: 48px;
-    font-weight: 400;
-    color: var(--text);
+    font-size: 2.8rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--sky), var(--electric));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     line-height: 1;
     letter-spacing: -0.02em;
   }
@@ -168,15 +194,17 @@
     top: -6px;
   }
   .year-event-tag {
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.12em;
+    font-family: var(--font-display);
+    font-size: 0.62rem;
+    font-weight: 400;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--accent);
-    padding: 4px 10px;
-    border: 1px solid rgba(201,169,110,0.25);
-    border-radius: 2px;
+    color: var(--yellow);
+    padding: 4px 12px;
+    border: 1px solid rgba(245,197,24,0.3);
+    border-radius: 2em;
     white-space: nowrap;
+    background: rgba(245,197,24,0.06);
   }
 
   /* PHOTO GRID — masonry-like with CSS grid */
@@ -317,10 +345,11 @@
   .lb-info {}
   .lb-title {
     font-family: var(--font-display);
-    font-size: 18px;
-    font-weight: 400;
-    color: var(--text);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--white);
     margin-bottom: 4px;
+    letter-spacing: 0.02em;
   }
   .lb-sub {
     font-size: 13px;
@@ -334,17 +363,17 @@
   }
   .lb-btn {
     width: 40px; height: 40px;
-    border: 1px solid var(--border2);
-    background: transparent;
-    color: var(--text2);
-    border-radius: 3px;
+    border: 1px solid var(--border);
+    background: rgba(41,170,255,0.06);
+    color: var(--muted);
+    border-radius: 8px;
     cursor: pointer;
     font-size: 16px;
     display: flex; align-items: center; justify-content: center;
-    transition: background 0.15s, color 0.15s;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
     font-family: var(--font-body);
   }
-  .lb-btn:hover { background: var(--surface2); color: var(--text); }
+  .lb-btn:hover { background: rgba(41,170,255,0.15); color: var(--white); border-color: var(--border2); }
   .lb-btn:disabled { opacity: 0.25; cursor: default; }
   .lb-counter {
     font-size: 12px;
@@ -377,7 +406,17 @@
 </head>
 <body>
 
-<div class="hero">
+<div id="prog" style="position:fixed;top:0;left:0;height:2px;width:0%;background:linear-gradient(90deg,var(--blue),var(--electric),var(--yellow));z-index:10000;transition:width .1s linear;"></div>
+
+<nav style="position:fixed;top:0;left:0;right:0;z-index:900;display:flex;align-items:center;padding:1rem 2.5rem;background:rgba(6,14,31,0.0);backdrop-filter:blur(0px);transition:background .3s,backdrop-filter .3s;" id="gal-nav">
+  <a href="index.html" style="font-family:var(--font-display);font-size:.65rem;font-weight:400;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:.6rem;transition:color .2s;" onmouseover="this.style.color='var(--white)'" onmouseout="this.style.color='var(--muted)'">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+    Повернутись
+  </a>
+  <span style="margin-left:auto;font-family:var(--font-display);font-size:.65rem;letter-spacing:.15em;color:var(--electric);">ФТІТ · Фотогалерея</span>
+</nav>
+
+<div class="hero" style="padding-top:110px;">
   <div class="hero-left">
     <div class="hero-eyebrow">Фотогалерея</div>
     <h1 class="hero-title">Двадцять<br>років <em>разом</em></h1>
@@ -396,7 +435,7 @@
 <div class="timeline" id="timeline"></div>
 
 <div class="footer">
-  <span class="footer-text">Факультет · 2004–2024</span>
+  <span class="footer-text">ФТІТ · НТУ · 2006–2026</span>
   <span class="footer-text" id="footer-count"></span>
 </div>
 
@@ -506,7 +545,22 @@ function buildNav() {
   const allBtn = document.createElement('button');
   allBtn.className = 'year-btn' + (activeYear === 'all' ? ' active' : '');
   allBtn.textContent = 'Всі роки';
-  allBtn.onclick = () => { activeYear = 'all'; render(); scrollNav(allBtn); };
+  allBtn.onclick = () => { activeYear = 'all'; render();
+
+// Progress bar
+const prog = document.getElementById("prog");
+window.addEventListener("scroll", () => {
+  const h = document.documentElement;
+  prog.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + "%";
+});
+// Nav scroll style
+const galNav = document.getElementById("gal-nav");
+window.addEventListener("scroll", () => {
+  const s = window.scrollY > 60;
+  galNav.style.background = s ? "rgba(6,14,31,0.92)" : "rgba(6,14,31,0.0)";
+  galNav.style.backdropFilter = s ? "blur(16px)" : "blur(0px)";
+  galNav.style.borderBottom = s ? "1px solid rgba(41,170,255,0.15)" : "none";
+}); scrollNav(allBtn); };
   nav.appendChild(allBtn);
 
   DATA.forEach(yr => {
@@ -514,7 +568,22 @@ function buildNav() {
     btn.className = 'year-btn' + (activeYear === yr.year ? ' active' : '');
     btn.textContent = yr.year;
     btn.dataset.year = yr.year;
-    btn.onclick = () => { activeYear = yr.year; render(); scrollNav(btn); };
+    btn.onclick = () => { activeYear = yr.year; render();
+
+// Progress bar
+const prog = document.getElementById("prog");
+window.addEventListener("scroll", () => {
+  const h = document.documentElement;
+  prog.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + "%";
+});
+// Nav scroll style
+const galNav = document.getElementById("gal-nav");
+window.addEventListener("scroll", () => {
+  const s = window.scrollY > 60;
+  galNav.style.background = s ? "rgba(6,14,31,0.92)" : "rgba(6,14,31,0.0)";
+  galNav.style.backdropFilter = s ? "blur(16px)" : "blur(0px)";
+  galNav.style.borderBottom = s ? "1px solid rgba(41,170,255,0.15)" : "none";
+}); scrollNav(btn); };
     nav.appendChild(btn);
   });
 }
@@ -618,6 +687,21 @@ document.addEventListener('keydown', (e) => {
 });
 
 render();
+
+// Progress bar
+const prog = document.getElementById("prog");
+window.addEventListener("scroll", () => {
+  const h = document.documentElement;
+  prog.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + "%";
+});
+// Nav scroll style
+const galNav = document.getElementById("gal-nav");
+window.addEventListener("scroll", () => {
+  const s = window.scrollY > 60;
+  galNav.style.background = s ? "rgba(6,14,31,0.92)" : "rgba(6,14,31,0.0)";
+  galNav.style.backdropFilter = s ? "blur(16px)" : "blur(0px)";
+  galNav.style.borderBottom = s ? "1px solid rgba(41,170,255,0.15)" : "none";
+});
 </script>
 </body>
 </html>
