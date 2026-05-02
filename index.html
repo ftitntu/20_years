@@ -642,6 +642,81 @@ footer{
   .footer-inner{flex-direction:column;text-align:center;}
   .footer-links{flex-wrap:wrap;justify-content:center;}
 }
+
+/* ══ PDF MODAL ══ */
+.pdf-overlay{
+  position:fixed;inset:0;z-index:2000;
+  background:rgba(6,14,31,.85);
+  backdrop-filter:blur(12px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;
+  transition:opacity .3s ease;
+}
+.pdf-overlay.open{opacity:1;pointer-events:all;}
+
+.pdf-modal{
+  width:min(900px, 92vw);
+  height:min(88vh, 860px);
+  background:var(--navy-mid);
+  border:1px solid var(--border);
+  border-radius:18px;
+  display:flex;flex-direction:column;
+  overflow:hidden;
+  transform:translateY(24px) scale(.98);
+  transition:transform .35s cubic-bezier(.22,1,.36,1);
+  box-shadow:0 32px 80px rgba(0,0,0,.6), 0 0 0 1px rgba(41,170,255,.08);
+}
+.pdf-overlay.open .pdf-modal{transform:translateY(0) scale(1);}
+
+.pdf-modal-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1rem 1.4rem;
+  border-bottom:1px solid var(--border);
+  flex-shrink:0;
+}
+.pdf-modal-title{
+  display:flex;align-items:center;gap:.75rem;
+}
+.pdf-modal-icon{
+  width:34px;height:34px;border-radius:8px;
+  background:rgba(245,197,24,.1);border:1px solid rgba(245,197,24,.2);
+  display:flex;align-items:center;justify-content:center;font-size:.95rem;
+  flex-shrink:0;
+}
+.pdf-modal-name{
+  font-family:'Unbounded',sans-serif;
+  font-size:.75rem;font-weight:600;color:var(--white);letter-spacing:.02em;
+}
+.pdf-modal-sub{
+  font-size:.65rem;color:var(--muted);letter-spacing:.05em;margin-top:.15rem;
+}
+.pdf-modal-actions{display:flex;align-items:center;gap:.75rem;}
+.pdf-modal-dl{
+  display:inline-flex;align-items:center;gap:.4rem;
+  font-family:'Unbounded',sans-serif;
+  font-size:.6rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--deep);
+  background:linear-gradient(135deg,var(--electric),var(--sky));
+  padding:.45em 1.1em;border-radius:2em;
+  text-decoration:none;
+  transition:transform .2s,box-shadow .2s;
+  box-shadow:0 0 16px rgba(41,170,255,.25);
+}
+.pdf-modal-dl:hover{transform:translateY(-1px);box-shadow:0 0 28px rgba(41,170,255,.45);}
+.pdf-modal-close{
+  width:32px;height:32px;border-radius:50%;
+  background:rgba(148,163,184,.08);border:1px solid rgba(148,163,184,.15);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:var(--muted);
+  transition:background .2s,color .2s,border-color .2s;
+  flex-shrink:0;
+}
+.pdf-modal-close:hover{background:rgba(255,255,255,.08);color:var(--white);border-color:rgba(255,255,255,.2);}
+
+.pdf-modal iframe{
+  flex:1;width:100%;border:none;
+  background:var(--deep);
+}
 </style>
 </head>
 <body>
@@ -799,12 +874,12 @@ footer{
     </p>
 
     <div class="docs-grid reveal">
-      <a class="doc-card" href="Docs/Order_2006.pdf" style="text-decoration:none;">
+      <div class="doc-card" onclick="openPdf('Docs/Order_2006.pdf','Наказ про створення факультету')" style="cursor:pointer;">
         <div class="doc-icon">📋</div>
         <div class="doc-title">Наказ про створення факультету</div>
         <div class="doc-desc">Офіційний документ про заснування ФТІТ у 2006 році.</div>
         <span class="doc-status ready"><span class="doc-status-dot"></span>Відкрити PDF</span>
-      </a>
+      </div>
       <div class="doc-card">
         <div class="doc-icon">🏅</div>
         <div class="doc-title">Акредитаційні сертифікати</div>
@@ -963,6 +1038,31 @@ footer{
   </div>
 </aside>
 
+<!-- PDF MODAL -->
+<div class="pdf-overlay" id="pdfOverlay" onclick="handleOverlayClick(event)">
+  <div class="pdf-modal" id="pdfModal">
+    <div class="pdf-modal-header">
+      <div class="pdf-modal-title">
+        <div class="pdf-modal-icon">📋</div>
+        <div>
+          <div class="pdf-modal-name" id="pdfModalName"></div>
+          <div class="pdf-modal-sub">ФТІТ · НТУ · PDF документ</div>
+        </div>
+      </div>
+      <div class="pdf-modal-actions">
+        <a class="pdf-modal-dl" id="pdfModalDl" href="#" download>
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Завантажити
+        </a>
+        <button class="pdf-modal-close" onclick="closePdf()" aria-label="Закрити">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+    <iframe id="pdfFrame" src="" title="PDF переглядач"></iframe>
+  </div>
+</div>
+
 <!-- FOOTER -->
 <footer>
   <div class="footer-inner">
@@ -1025,6 +1125,30 @@ const obs = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.12 });
 document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// PDF Modal
+function openPdf(src, name) {
+  document.getElementById('pdfFrame').src = src;
+  document.getElementById('pdfModalName').textContent = name;
+  document.getElementById('pdfModalDl').href = src;
+  document.getElementById('pdfOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closePdf() {
+  document.getElementById('pdfOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+  setTimeout(() => { document.getElementById('pdfFrame').src = ''; }, 350);
+}
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('pdfOverlay')) closePdf();
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    const drawer = document.getElementById('drawer');
+    if (drawer.classList.contains('open')) toggleDrawer();
+    else closePdf();
+  }
+});
 </script>
 </body>
 </html>
