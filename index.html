@@ -721,6 +721,88 @@ footer{
   flex:1;width:100%;border:none;
   background:var(--deep);
 }
+
+/* ══ PHOTO SLIDER MODAL (mobile) ══ */
+.photo-overlay{
+  position:fixed;inset:0;z-index:2000;
+  background:rgba(6,14,31,.95);
+  backdrop-filter:blur(16px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;
+  transition:opacity .3s ease;
+}
+.photo-overlay.open{opacity:1;pointer-events:all;}
+
+.photo-modal{
+  width:100%;max-width:480px;
+  display:flex;flex-direction:column;
+  align-items:center;
+  padding:1rem;
+  transform:translateY(24px);
+  transition:transform .35s cubic-bezier(.22,1,.36,1);
+}
+.photo-overlay.open .photo-modal{transform:translateY(0);}
+
+.photo-modal-header{
+  width:100%;display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:1rem;padding:0 .25rem;
+}
+.photo-modal-name{
+  font-family:'Unbounded',sans-serif;
+  font-size:.7rem;font-weight:600;color:var(--white);letter-spacing:.02em;
+}
+.photo-modal-close{
+  width:34px;height:34px;border-radius:50%;
+  background:rgba(148,163,184,.08);border:1px solid rgba(148,163,184,.15);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:var(--muted);
+  transition:background .2s,color .2s;
+}
+.photo-modal-close:hover{background:rgba(255,255,255,.08);color:var(--white);}
+
+.photo-stage{
+  width:100%;aspect-ratio:3/4;
+  border-radius:14px;overflow:hidden;
+  position:relative;
+  background:var(--navy-mid);border:1px solid var(--border);
+  touch-action:pan-y;
+}
+.photo-stage img{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:contain;opacity:0;
+  transition:opacity .3s ease;
+  user-select:none;-webkit-user-drag:none;
+}
+.photo-stage img.active{opacity:1;}
+
+.photo-nav{
+  width:100%;display:flex;align-items:center;justify-content:space-between;
+  margin-top:1rem;gap:.75rem;
+}
+.photo-btn{
+  width:44px;height:44px;border-radius:50%;flex-shrink:0;
+  background:rgba(41,170,255,.1);border:1px solid rgba(41,170,255,.25);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:var(--electric);
+  transition:background .2s,transform .2s;
+}
+.photo-btn:active{transform:scale(.92);}
+.photo-btn:disabled{opacity:.3;cursor:default;}
+.photo-btn svg{width:18px;height:18px;}
+
+.photo-dots{
+  display:flex;gap:.5rem;align-items:center;justify-content:center;flex:1;
+}
+.photo-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:rgba(148,163,184,.3);
+  transition:background .2s,transform .2s;cursor:pointer;
+}
+.photo-dot.active{background:var(--electric);transform:scale(1.3);}
+
+.photo-counter{
+  font-size:.65rem;color:var(--muted);letter-spacing:.1em;margin-top:.6rem;
+}
 </style>
 </head>
 <body>
@@ -877,7 +959,7 @@ footer{
     </p>
 
     <div class="docs-grid reveal">
-      <div class="doc-card" onclick="openPdf('Docs/Order_2006.pdf','Наказ про створення факультету')" style="cursor:pointer;">
+      <div class="doc-card" onclick="openPdf('Docs/Order2006/Order_2006.pdf','Наказ про створення факультету')" style="cursor:pointer;">
         <div class="doc-icon">📋</div>
         <div class="doc-title">Наказ про створення факультету</div>
         <div class="doc-desc">Офіційний документ про заснування ФТІТ у 2006 році.</div>
@@ -1066,6 +1148,31 @@ footer{
   </div>
 </div>
 
+<!-- PHOTO SLIDER MODAL (mobile, order_2006) -->
+<div class="photo-overlay" id="photoOverlay" onclick="handlePhotoOverlayClick(event)">
+  <div class="photo-modal" id="photoModal">
+    <div class="photo-modal-header">
+      <div class="photo-modal-name" id="photoModalName"></div>
+      <button class="photo-modal-close" onclick="closePhoto()" aria-label="Закрити">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="photo-stage" id="photoStage"></div>
+    <div class="photo-nav">
+      <button class="photo-btn" id="photoPrev" onclick="changePhoto(-1)" aria-label="Назад">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="photo-dots" id="photoDots"></div>
+      <button class="photo-btn" id="photoNext" onclick="changePhoto(1)" aria-label="Вперед">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+    <div class="photo-counter" id="photoCounter"></div>
+  </div>
+</div>
+
 <!-- FOOTER -->
 <footer>
   <div class="footer-inner">
@@ -1131,6 +1238,11 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
 // PDF Modal
 function openPdf(src, name) {
+  // На мобайлі для order_2006 — відкрити фото-слайдер
+  if (window.innerWidth <= 768 && src.includes('Order2006')) {
+    openPhoto(name);
+    return;
+  }
   document.getElementById('pdfFrame').src = src;
   document.getElementById('pdfModalName').textContent = name;
   document.getElementById('pdfModalDl').href = src;
@@ -1145,11 +1257,95 @@ function closePdf() {
 function handleOverlayClick(e) {
   if (e.target === document.getElementById('pdfOverlay')) closePdf();
 }
+
+// Photo Slider Modal (mobile, order_2006)
+// ⬇ Вкажи тут шляхи до своїх фото
+const ORDER_2006_PHOTOS = [
+  'Docs/Order2006/Order_2006_page-0001.jpg',
+  'Docs/Order2006/Order_2006_page-0002.jpg',
+  'Docs/Order2006/Order_2006_page-0003.jpg',
+  'Docs/Order2006/Order_2006_page-0004.jpg',
+];
+
+let photoIndex = 0;
+
+function openPhoto(name) {
+  const stage = document.getElementById('photoStage');
+  const dots = document.getElementById('photoDots');
+  stage.innerHTML = '';
+  dots.innerHTML = '';
+
+  ORDER_2006_PHOTOS.forEach((src, i) => {
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = name + ' — фото ' + (i + 1);
+    if (i === 0) img.classList.add('active');
+    stage.appendChild(img);
+
+    const dot = document.createElement('div');
+    dot.className = 'photo-dot' + (i === 0 ? ' active' : '');
+    dot.onclick = () => goToPhoto(i);
+    dots.appendChild(dot);
+  });
+
+  photoIndex = 0;
+  updatePhotoUI();
+  document.getElementById('photoModalName').textContent = name;
+  document.getElementById('photoOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  // Свайп
+  let startX = 0;
+  stage.ontouchstart = e => { startX = e.touches[0].clientX; };
+  stage.ontouchend = e => {
+    const dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 40) changePhoto(dx < 0 ? 1 : -1);
+  };
+}
+
+function closePhoto() {
+  document.getElementById('photoOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function handlePhotoOverlayClick(e) {
+  if (e.target === document.getElementById('photoOverlay')) closePhoto();
+}
+
+function goToPhoto(i) {
+  photoIndex = i;
+  updatePhotoUI();
+}
+
+function changePhoto(dir) {
+  const total = ORDER_2006_PHOTOS.length;
+  photoIndex = (photoIndex + dir + total) % total;
+  updatePhotoUI();
+}
+
+function updatePhotoUI() {
+  const imgs = document.querySelectorAll('#photoStage img');
+  const dots = document.querySelectorAll('#photoDots .photo-dot');
+  const total = ORDER_2006_PHOTOS.length;
+
+  imgs.forEach((img, i) => img.classList.toggle('active', i === photoIndex));
+  dots.forEach((dot, i) => dot.classList.toggle('active', i === photoIndex));
+
+  document.getElementById('photoCounter').textContent = (photoIndex + 1) + ' / ' + total;
+  document.getElementById('photoPrev').disabled = photoIndex === 0;
+  document.getElementById('photoNext').disabled = photoIndex === total - 1;
+}
+
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
     const drawer = document.getElementById('drawer');
     if (drawer.classList.contains('open')) toggleDrawer();
+    else if (document.getElementById('photoOverlay').classList.contains('open')) closePhoto();
     else closePdf();
+  }
+  if (document.getElementById('photoOverlay').classList.contains('open')) {
+    if (e.key === 'ArrowLeft') changePhoto(-1);
+    if (e.key === 'ArrowRight') changePhoto(1);
   }
 });
 </script>
