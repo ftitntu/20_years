@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Привітання від випускників · ФТІТ НТУ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;700;900&family=Geologica:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --deep:     #060e1f;
+  --navy:     #0d1b3e;
+  --navy-mid: #162650;
+  --blue:     #1e40af;
+  --electric: #29aaff;
+  --sky:      #7dd4fc;
+  --yellow:   #f5c518;
+  --white:    #ffffff;
+  --muted:    #94a3b8;
+  --border:   rgba(41,170,255,0.15);
+}
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--deep);
+  color:var(--white);
+  font-family:'Geologica',sans-serif;
+  font-weight:300;
+  overflow-x:hidden;
+}
+
+/* ── NOISE ── */
+body::after{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity:0.03;pointer-events:none;z-index:9999;
+}
+
+/* ── PROGRESS ── */
+#prog{
+  position:fixed;top:0;left:0;height:2px;width:0%;
+  background:linear-gradient(90deg,var(--blue),var(--electric),var(--yellow));
+  z-index:10000;transition:width .1s linear;
+}
+
+/* ══ NAV ══ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.2rem 3rem;
+  background:#101E40;
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(255,255,255,.06);
+  transition:background .3s,border-color .3s;
+}
+nav.scrolled{
+  background:#101E40;
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(41,170,255,.12);
+}
+.nav-logo{
+  font-family:'Unbounded',sans-serif;
+  font-size:.75rem;font-weight:700;
+  letter-spacing:.15em;color:var(--electric);
+  text-decoration:none;
+  display:flex;align-items:center;gap:.6rem;
+}
+.nav-back{
+  display:flex;align-items:center;gap:.5rem;
+  font-size:.72rem;font-weight:400;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;
+  transition:color .2s;
+}
+.nav-back:hover{color:var(--white);}
+.nav-back svg{width:16px;height:16px;}
+
+/* ══ HERO ══ */
+.page-hero{
+  min-height:42vh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;
+  padding:8rem 2rem 5rem;
+  position:relative;
+  overflow:hidden;
+}
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(41,170,255,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(41,170,255,.04) 1px, transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 100%);
+}
+.orb{
+  position:absolute;width:400px;height:400px;border-radius:50%;
+  background:radial-gradient(circle, rgba(29,64,175,.2) 0%, rgba(41,170,255,.06) 45%, transparent 70%);
+  pointer-events:none;
+}
+.page-hero-inner{position:relative;}
+.page-tag{
+  display:inline-flex;align-items:center;gap:.6rem;
+  font-family:'Geologica',sans-serif;
+  font-size:.7rem;font-weight:500;letter-spacing:.25em;text-transform:uppercase;
+  color:var(--electric);
+  border:1px solid rgba(41,170,255,.3);
+  padding:.5em 1.4em;border-radius:2em;
+  margin-bottom:1.8rem;
+  animation:fadeUp 1s ease both;
+}
+.page-tag-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--electric);
+  box-shadow:0 0 8px var(--electric);
+  animation:blink 2s ease-in-out infinite;
+}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+.page-hero h1{
+  font-family:'Unbounded',sans-serif;
+  font-size:clamp(2rem,5vw,3.8rem);
+  font-weight:700;line-height:1.1;
+  letter-spacing:-.02em;
+  margin-bottom:1rem;
+  animation:fadeUp 1s ease .1s both;
+}
+.page-hero h1 em{color:var(--electric);font-style:normal;}
+.page-hero p{
+  font-size:clamp(.85rem,1.5vw,1rem);
+  color:var(--muted);line-height:1.8;
+  max-width:520px;margin:0 auto;
+  animation:fadeUp 1s ease .2s both;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+/* ══ CONTROLS ══ */
+.controls-bar{
+  padding:2rem 2rem 0;
+  max-width:1300px;margin:0 auto;
+  display:flex;align-items:center;gap:1rem;flex-wrap:wrap;
+}
+.search-wrap{
+  position:relative;flex:1;min-width:220px;max-width:380px;
+}
+.search-wrap svg{
+  position:absolute;left:.9rem;top:50%;transform:translateY(-50%);
+  width:15px;height:15px;color:var(--muted);pointer-events:none;
+}
+.ctrl-search{
+  width:100%;
+  background:var(--navy-mid);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:.65rem 1rem .65rem 2.4rem;
+  color:var(--white);
+  font-family:'Geologica',sans-serif;font-size:.85rem;
+  outline:none;transition:border-color .2s;
+}
+.ctrl-search::placeholder{color:var(--muted);}
+.ctrl-search:focus{border-color:rgba(41,170,255,.4);}
+
+.year-filters{display:flex;gap:.5rem;flex-wrap:wrap;}
+.yf-btn{
+  font-family:'Unbounded',sans-serif;
+  font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);
+  background:rgba(148,163,184,.06);
+  border:1px solid rgba(148,163,184,.15);
+  border-radius:2em;padding:.4em 1em;
+  cursor:pointer;transition:all .2s;white-space:nowrap;
+}
+.yf-btn:hover,.yf-btn.active{
+  color:var(--electric);
+  background:rgba(41,170,255,.08);
+  border-color:rgba(41,170,255,.3);
+}
+.ctrl-count{
+  margin-left:auto;
+  font-size:.7rem;color:var(--muted);letter-spacing:.05em;
+  white-space:nowrap;
+}
+
+/* ══ MASONRY ══ */
+.masonry-wrap{
+  padding:2rem 2rem 6rem;
+  max-width:1300px;margin:0 auto;
+}
+.masonry{
+  columns:3;column-gap:1.25rem;
+}
+.g-card{
+  break-inside:avoid;
+  background:var(--navy-mid);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:1.6rem 1.8rem;
+  margin-bottom:1.25rem;
+  display:flex;flex-direction:column;gap:1rem;
+  transition:border-color .25s,transform .25s,box-shadow .25s;
+  opacity:0;transform:translateY(20px);
+  animation:cardIn .5s ease forwards;
+}
+.g-card:hover{
+  border-color:rgba(41,170,255,.3);
+  transform:translateY(-3px);
+  box-shadow:0 16px 48px rgba(0,0,0,.35);
+}
+@keyframes cardIn{to{opacity:1;transform:translateY(0);}}
+
+.g-card-top{display:flex;align-items:center;gap:.9rem;}
+.g-avatar{
+  width:42px;height:42px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Unbounded',sans-serif;
+  font-size:.7rem;font-weight:700;color:var(--white);
+  letter-spacing:.02em;
+}
+.g-info{}
+.g-name{
+  font-family:'Unbounded',sans-serif;
+  font-size:.78rem;font-weight:600;
+  color:var(--white);letter-spacing:.01em;
+  line-height:1.3;
+}
+.g-year{
+  display:inline-block;margin-top:.3rem;
+  font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--electric);
+  background:rgba(41,170,255,.08);
+  border:1px solid rgba(41,170,255,.2);
+  border-radius:1em;padding:.2em .7em;
+}
+.g-quote{
+  font-size:.88rem;color:var(--muted);line-height:1.75;
+  position:relative;padding-left:1rem;
+}
+.g-quote::before{
+  content:'';
+  position:absolute;left:0;top:.2em;bottom:.2em;
+  width:2px;border-radius:1px;
+  background:linear-gradient(to bottom,var(--electric),transparent);
+}
+
+.empty-state{
+  text-align:center;padding:5rem 2rem;color:var(--muted);
+  font-size:.95rem;grid-column:1/-1;
+}
+
+/* ══ FOOTER ══ */
+footer{
+  background:var(--deep);
+  border-top:1px solid var(--border);
+  padding:3rem 2rem;
+}
+.footer-inner{
+  max-width:1200px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:2rem;flex-wrap:wrap;
+}
+.footer-brand{
+  font-family:'Unbounded',sans-serif;
+  font-size:.75rem;font-weight:700;
+  color:var(--electric);letter-spacing:.1em;
+  display:flex;flex-direction:column;gap:.3rem;
+}
+.footer-brand span{
+  font-family:'Geologica',sans-serif;
+  font-size:.72rem;font-weight:300;
+  color:var(--muted);letter-spacing:.03em;
+}
+.footer-links{display:flex;gap:2rem;}
+.footer-links a{
+  font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;transition:color .2s;
+}
+.footer-links a:hover{color:var(--white);}
+.footer-copy{font-size:.7rem;color:rgba(148,163,184,.5);letter-spacing:.05em;}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:1000px){.masonry{columns:2;}}
+@media(max-width:640px){
+  nav{padding:1rem 1.5rem;}
+  .masonry{columns:1;}
+  .ctrl-count{display:none;}
+  .footer-inner{flex-direction:column;text-align:center;}
+  .footer-links{flex-wrap:wrap;justify-content:center;}
+}
+</style>
+</head>
+<body>
+
+<div id="prog"></div>
+
+<nav id="nav">
+  <a href="index.html" class="nav-logo">ФТІТ · НТУ</a>
+  <a href="index.html#greetings" class="nav-back">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+    Назад
+  </a>
+</nav>
+
+<!-- HERO -->
+<section class="page-hero">
+  <div class="hero-grid"></div>
+  <div class="orb"></div>
+  <div class="page-hero-inner">
+    <div class="page-tag"><span class="page-tag-dot"></span>Вітання · ФТІТ 20 років</div>
+    <h1>Привітання від <em>випускників</em></h1>
+    <p>Слова вдячності, спогади та побажання від тих, хто навчався на факультеті у різні роки</p>
+  </div>
+</section>
+
+<!-- CONTROLS -->
+<div class="controls-bar">
+  <div class="search-wrap">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input class="ctrl-search" type="text" id="searchInput" placeholder="Пошук за іменем..." oninput="filter()">
+  </div>
+  <div class="year-filters" id="yearFilters">
+    <button class="yf-btn active" data-year="all" onclick="setYear(this)">Всі роки</button>
+  </div>
+  <div class="ctrl-count" id="countLabel"></div>
+</div>
+
+<!-- MASONRY -->
+<div class="masonry-wrap">
+  <div class="masonry" id="masonryGrid"></div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      ФТІТ · НТУ
+      <span>Факультет транспортних та інформаційних технологій</span>
+    </div>
+    <div class="footer-links">
+      <a href="index.html#about">Про факультет</a>
+      <a href="index.html#gallery">Галерея</a>
+      <a href="index.html#docs">Матеріали</a>
+      <a href="review_uni.html">Колеги та друзі</a>
+    </div>
+    <div class="footer-copy">© 2026 · 20 років ФТІТ</div>
+  </div>
+</footer>
+
+<script>
+// ── прогрес-бар ──
+const prog = document.getElementById('prog');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  prog.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
+});
+
+// ── nav scroll ──
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+// ══ ДАНІ ══
+// Щоб додати нового випускника — просто додай об'єкт у масив нижче
+const GREETINGS = [
+  {
+    name: 'Коваленко Олексій Михайлович',
+    year: 2010,
+    text: 'ФТІТ — це місце, де я навчився не лише програмувати, а й мислити системно. Ці роки сформували мене як фахівця і як людину. Вітаю рідний факультет з 20-річчям і бажаю нових висот!'
+  },
+  {
+    name: 'Савченко Марія Іванівна',
+    year: 2014,
+    text: 'Дякую кожному викладачеві, який ділився знаннями і надихав. ФТІТ — це не просто диплом, це спільнота людей, які змінюють світ навколо себе. З ювілеєм!'
+  },
+  {
+    name: 'Бондаренко Дмитро Олегович',
+    year: 2018,
+    text: 'Чотири роки на ФТІТ пролетіли як один день. Тут я знайшов справжніх друзів, відкрив для себе IT-сферу і зрозумів, чим хочу займатися все життя. Щиро вітаю факультет з 20-річним ювілеєм!'
+  },
+  {
+    name: 'Ткаченко Анна Василівна',
+    year: 2012,
+    text: 'Пишаюся, що я випускниця ФТІТ. Факультет завжди йшов у ногу з часом — нові технології, сучасні підходи. Нехай наступні 20 років будуть ще яскравішими!'
+  },
+  {
+    name: 'Мельник Сергій Петрович',
+    year: 2023,
+    text: 'Я один із найновіших випускників, але вже встиг відчути, як знання з ФТІТ допомагають у реальній роботі. Дякую за якісну освіту!'
+  },
+  {
+    name: 'Гриценко Юлія Олександрівна',
+    year: 2016,
+    text: 'Студентські роки на ФТІТ — найкращий час мого життя. Проєкти, захисти, безсонні ночі перед дедлайнами — все це зробило мене сильнішою. Вітаю факультет з ювілеєм і бажаю процвітання!'
+  },
+  {
+    name: 'Петренко Максим Вікторович',
+    year: 2009,
+    text: 'Я з першого покоління випускників. Памʼятаю, як усе тільки починалося, як формувалася кафедра, як зʼявлялися нові спеціальності. Пройдено великий шлях — пишаюся вами!'
+  },
+  {
+    name: 'Луценко Вікторія Сергіївна',
+    year: 2020,
+    text: 'Наш випуск — 2020-й — особливий. Ми захищали дипломи в умовах пандемії, але ФТІТ підтримав нас і в цей непростий час. Дякую факультету за стійкість і людяність.'
+  },
+  {
+    name: 'Шевченко Андрій Романович',
+    year: 2015,
+    text: 'На ФТІТ я отримав не просто технічну освіту, а вміння вирішувати задачі, яких ще ніхто не вирішував. Це дало мені впевненість іти вперед у будь-якій ситуації. З ювілеєм!'
+  },
+  {
+    name: 'Кравченко Оксана Миколаївна',
+    year: 2019,
+    text: 'Дякую викладачам за терпіння і за те, що ніколи не давали здаватися. ФТІТ — це про людей, які справді хочуть, щоб ти виріс. Вітаю факультет з 20 роками!'
+  },
+];
+
+// Кольори для аватарів
+const AVATAR_COLORS = [
+  'linear-gradient(135deg,#1e40af,#29aaff)',
+  'linear-gradient(135deg,#7c3aed,#a78bfa)',
+  'linear-gradient(135deg,#0f766e,#2dd4bf)',
+  'linear-gradient(135deg,#b45309,#f5c518)',
+  'linear-gradient(135deg,#be185d,#f9a8d4)',
+  'linear-gradient(135deg,#1d4ed8,#7dd4fc)',
+];
+
+function getInitials(name) {
+  const parts = name.trim().split(' ');
+  return (parts[0]?.[0] || '') + (parts[1]?.[0] || '');
+}
+
+function getColor(index) {
+  return AVATAR_COLORS[index % AVATAR_COLORS.length];
+}
+
+// ── фільтри ──
+let activeYear = 'all';
+
+function buildYearButtons() {
+  const years = [...new Set(GREETINGS.map(g => g.year))].sort((a, b) => b - a);
+  const container = document.getElementById('yearFilters');
+  years.forEach(y => {
+    const btn = document.createElement('button');
+    btn.className = 'yf-btn';
+    btn.dataset.year = y;
+    btn.textContent = y;
+    btn.onclick = () => setYear(btn);
+    container.appendChild(btn);
+  });
+}
+
+function setYear(btn) {
+  document.querySelectorAll('.yf-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeYear = btn.dataset.year;
+  filter();
+}
+
+function filter() {
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  const result = GREETINGS.filter(g => {
+    const matchYear = activeYear === 'all' || String(g.year) === String(activeYear);
+    const matchName = !q || g.name.toLowerCase().includes(q);
+    return matchYear && matchName;
+  });
+  render(result);
+}
+
+function render(list) {
+  const grid = document.getElementById('masonryGrid');
+  const countLabel = document.getElementById('countLabel');
+
+  if (!list.length) {
+    grid.innerHTML = '<div class="empty-state">Нічого не знайдено 🔍</div>';
+    countLabel.textContent = '';
+    return;
+  }
+
+  grid.innerHTML = list.map((g, i) => `
+    <div class="g-card" style="animation-delay:${i * 60}ms">
+      <div class="g-card-top">
+        <div class="g-avatar" style="background:${getColor(GREETINGS.indexOf(g))}">${getInitials(g.name)}</div>
+        <div class="g-info">
+          <div class="g-name">${g.name}</div>
+          <span class="g-year">Випуск ${g.year}</span>
+        </div>
+      </div>
+      <div class="g-quote">${g.text}</div>
+    </div>
+  `).join('');
+
+  countLabel.textContent = `${list.length} привітань`;
+}
+
+buildYearButtons();
+filter();
+</script>
+</body>
+</html>
