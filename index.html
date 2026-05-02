@@ -874,7 +874,7 @@ footer{
     </p>
 
     <div class="docs-grid reveal">
-      <div class="doc-card" onclick="openPdf('Docs/Order_2006.pdf','Наказ про створення факультету')" style="cursor:pointer;">
+      <div class="doc-card" onclick="openPdf('http://kist.ntu.edu.ua/news/nakazy_rectora_ntu_21-07-2006.pdf','Наказ про створення факультету')" style="cursor:pointer;">
         <div class="doc-icon">📋</div>
         <div class="doc-title">Наказ про створення факультету</div>
         <div class="doc-desc">Офіційний документ про заснування ФТІТ у 2006 році.</div>
@@ -1130,7 +1130,7 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 function openPdf(src, name) {
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   if (isMobile) {
-    window.open('https://docs.google.com/viewer?url=' + encodeURIComponent('https://ftitntu.github.io/20_years/' + src), '_blank');
+    window.open('https://docs.google.com/viewer?url=' + encodeURIComponent(src), '_blank');
     return;
   }
   document.getElementById('pdfFrame').src = src;
