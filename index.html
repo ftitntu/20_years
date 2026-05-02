@@ -1128,11 +1128,6 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
 // PDF Modal
 function openPdf(src, name) {
-  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-  if (isMobile) {
-    window.open('https://docs.google.com/viewer?url=' + encodeURIComponent('https://ftitntu.github.io/20_years/' + src), '_blank');
-    return;
-  }
   document.getElementById('pdfFrame').src = src;
   document.getElementById('pdfModalName').textContent = name;
   document.getElementById('pdfModalDl').href = src;
