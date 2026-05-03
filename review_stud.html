@@ -166,6 +166,16 @@ nav.scrolled{border-bottom:1px solid rgba(41,170,255,.12);}
   background:rgba(41,170,255,.08);border:1px solid rgba(41,170,255,.2);
   border-radius:1em;padding:.2em .7em;
 }
+.g-department{
+  display:inline-block;margin-top:.3rem;margin-left:.3rem;font-size:.6rem;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--yellow);
+  background:rgba(245,197,24,.08);border:1px solid rgba(245,197,24,.2);
+  border-radius:1em;padding:.2em .7em;
+}
+.g-position{
+  display:block;margin-top:.35rem;
+  font-size:.75rem;color:var(--muted);font-style:italic;
+}
 .g-quote{
   font-size:.88rem;color:var(--muted);line-height:1.75;
   position:relative;padding-left:1rem;
@@ -398,6 +408,8 @@ function render(list) {
         <div>
           <div class="g-name">${g.name}</div>
           <span class="g-year">Випуск ${g.year}</span>
+          ${g.department ? `<span class="g-department">${g.department}</span>` : ''}
+          ${g.position ? `<span class="g-position">${g.position}</span>` : ''}
         </div>
       </div>
       <div class="g-quote">${g.text}</div>
