@@ -299,9 +299,7 @@ window.addEventListener('scroll', () => {
 // ══ КОНФІГ GITHUB ══
 const REPO   = 'ftitntu/ftit20';
 const BRANCH = 'main';
-const FOLDER = 'Reviews/Students';
-const API_URL = `https://api.github.com/repos/${REPO}/contents/${FOLDER}?ref=${BRANCH}`;
-const RAW_URL = `https://raw.githubusercontent.com/${REPO}/${BRANCH}/${FOLDER}`;
+const FILE_URL = `https://raw.githubusercontent.com/${REPO}/${BRANCH}/Reviews/Students/students.json`;
 
 // Кольори аватарів
 const COLORS = [
@@ -324,30 +322,17 @@ function initials(name) {
 // ── Завантаження з GitHub ──
 async function load() {
   try {
-    const res = await fetch(API_URL);
-    if (!res.ok) throw new Error(`GitHub API повернув ${res.status}`);
+    const res = await fetch(FILE_URL);
+    if (!res.ok) throw new Error(`Не вдалося завантажити файл (${res.status})`);
 
-    const files = await res.json();
-    const jsonFiles = files.filter(f => f.name.endsWith('.json'));
+    const data = await res.json();
 
-    if (!jsonFiles.length) {
-      return showState('💬', 'Привітань поки немає',
-        'Додай .json файли у папку Reviews/Students на GitHub');
-    }
-
-    // Завантажуємо всі файли паралельно
-    const fetched = await Promise.allSettled(
-      jsonFiles.map(f => fetch(`${RAW_URL}/${f.name}`).then(r => r.json()))
-    );
-
-    ALL = fetched
-      .filter(r => r.status === 'fulfilled')
-      .map(r => r.value)
+    ALL = (Array.isArray(data) ? data : [])
       .filter(g => g.name && g.year && g.text);
 
     if (!ALL.length) {
-      return showState('⚠️', 'Невірний формат файлів',
-        'Переконайся що кожен .json містить поля: name, year, text');
+      return showState('💬', 'Привітань поки немає',
+        'Додай записи у файл Reviews/Students/students.json на GitHub');
     }
 
     buildYears();
