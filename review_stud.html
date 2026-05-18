@@ -327,8 +327,9 @@ async function load() {
 
     const data = await res.json();
 
-    ALL = (Array.isArray(data) ? data : [])
-      .filter(g => g.name && g.year && g.text);
+ALL = (Array.isArray(data) ? data : [])
+  .filter(g => g.name && g.year && g.text)
+  .sort((a, b) => b.year - a.year);
 
     if (!ALL.length) {
       return showState('💬', 'Привітань поки немає',
